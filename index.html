@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Blue Mall</title>
+<style>
+body{font-family:sans-serif;background:#f5f7fa}
+.card{background:#fff;padding:10px;margin:10px;border-radius:8px}
+button{padding:6px 12px}
+.top{display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h2>Blue Mall</h2>
+  <div ondblclick="location.href='cart.html'" style="cursor:pointer">
+    🛒 ตะกร้า
+  </div>
+</div>
+
+<div class="card">
+  <b>พาวเวอร์แบงค์ 20000mAh</b><br>
+  ราคา 337 บาท<br>
+  <button onclick="addToCart('พาวเวอร์แบงค์ 20000mAh',337)">ใส่ตะกร้า</button>
+</div>
+
+<div class="card">
+  <b>หัวชาร์จ 65W</b><br>
+  ราคา 459 บาท<br>
+  <button onclick="addToCart('หัวชาร์จ 65W',459)">ใส่ตะกร้า</button>
+</div>
+
+<script>
+function addToCart(name, price){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let item = cart.find(i=>i.name===name);
+  if(item){ item.qty++; }
+  else{ cart.push({name,price,qty:1}); }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("เพิ่มสินค้าแล้ว");
+}
+</script>
+
+</body>
+</html>

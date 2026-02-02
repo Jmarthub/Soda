@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ชำระเงิน</title>
+</head>
+<body>
+
+<h2>สรุปรายการ</h2>
+<div id="summary"></div>
+<h3>ยอดรวม: <span id="total"></span> บาท</h3>
+
+<button onclick="confirmOrder()">ยืนยันสั่งซื้อ</button>
+<button onclick="location.href='cart.html'">กลับตะกร้า</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let sum=0, html="";
+cart.forEach(i=>{
+  sum += i.price*i.qty;
+  html += `${i.name} x ${i.qty}<br>`;
+});
+document.getElementById("summary").innerHTML = html;
+document.getElementById("total").innerText = sum;
+
+function confirmOrder(){
+  alert("บันทึกออเดอร์แล้ว (ตัวอย่าง)");
+  localStorage.removeItem("cart");
+  location.href="index.html";
+}
+</script>
+
+</body>
+</html>

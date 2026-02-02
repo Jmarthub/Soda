@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ตะกร้าของฉัน</title>
+<style>
+body{font-family:sans-serif}
+.item{border-bottom:1px solid #ddd;padding:8px}
+button{margin:0 4px}
+</style>
+</head>
+<body>
+
+<h2>🛒 ตะกร้าของฉัน</h2>
+<div id="cart"></div>
+<h3>รวม: <span id="total">0</span> บาท</h3>
+
+<button onclick="location.href='checkout.html'">ชำระเงิน</button>
+<button onclick="location.href='index.html'">เลือกซื้อเพิ่ม</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function render(){
+  let html="", total=0;
+  cart.forEach((i,idx)=>{
+    total += i.price*i.qty;
+    html += `
+      <div class="item">
+        ${i.name} (${i.price} บาท)
+        <button onclick="qty(${idx},-1)">-</button>
+        ${i.qty}
+        <button onclick="qty(${idx},1)">+</button>
+        <button onclick="del(${idx})">ลบ</button>
+      </div>`;
+  });
+  document.getElementById("cart").innerHTML = html || "ไม่มีสินค้า";
+  document.getElementById("total").innerText = total;
+}
+
+function qty(i,d){
+  cart[i].qty += d;
+  if(cart[i].qty<=0) cart.splice(i,1);
+  save();
+}
+function del(i){
+  cart.splice(i,1); save();
+}
+function save(){
+  localStorage.setItem("cart",JSON.stringify(cart));
+  render();
+}
+render();
+</script>
+
+</body>
+</html>
