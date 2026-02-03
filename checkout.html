@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<title>ชำระเงิน</title>
-</head>
-<body>
-
-<h2>สรุปรายการ</h2>
-<div id="summary"></div>
-<h3>ยอดรวม: <span id="total"></span> บาท</h3>
-
-<button onclick="confirmOrder()">ยืนยันสั่งซื้อ</button>
-<button onclick="location.href='cart.html'">กลับตะกร้า</button>
-
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let sum=0, html="";
@@ -23,12 +8,33 @@ cart.forEach(i=>{
 document.getElementById("summary").innerHTML = html;
 document.getElementById("total").innerText = sum;
 
+// ฟังก์ชันสำหรับส่งข้อมูลไปยัง Google Apps Script
 function confirmOrder(){
-  alert("บันทึกออเดอร์แล้ว (ตัวอย่าง)");
-  localStorage.removeItem("cart");
-  location.href="index.html";
+  const url = "https://script.google.com/macros/s/AKfycby9HVBFmEAi7Ps4UpjsH2cBRXOFJ9d5wYTpUUfiCVDA6Iw3_kKfMY2KIYn4MESkoaVj/exec";
+  
+  // เตรียมข้อมูลที่จะส่ง
+  const data = {
+    total: sum,
+    items: cart,
+    timestamp: new Date().toLocaleString()
+  };
+
+  // ใช้ fetch ส่งข้อมูลแบบ POST
+  fetch(url, {
+    method: "POST",
+    mode: "no-cors", // ใช้ no-cors สำหรับ Google Apps Script ในบางกรณี
+    cache: "no-cache",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    alert("บันทึกออเดอร์เรียบร้อยแล้ว!");
+    localStorage.removeItem("cart"); // ล้างตะกร้า
+    location.href = "index.html"; // กลับหน้าแรก
+  })
+  .catch(err => {
+    console.error(err);
+    alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+  });
 }
 </script>
-
-</body>
-</html>
